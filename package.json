@@ -42,7 +42,7 @@
     "@tanstack/react-store": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "@tanstack/store": "latest",
-    "drizzle-kit": "^0.18.1",
+    "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.1",
     "highlight.js": "^11.11.1",
     "lucide-react": "^0.577.0",
