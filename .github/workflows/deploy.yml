@@ -20,6 +20,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate route tree
+        run: npm run generate-routes
+
       - name: Build & Deploy
         run: npm run deploy
         env:
