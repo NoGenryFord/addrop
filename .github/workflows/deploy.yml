@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Run DB migrations
-        run: npm run db:migrate
+        run: npm run db:migrate:pg
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
