@@ -42,6 +42,7 @@
     "@tanstack/react-store": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "@tanstack/store": "latest",
+    "cheerio": "^1.2.0",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.1",
     "highlight.js": "^11.11.1",
