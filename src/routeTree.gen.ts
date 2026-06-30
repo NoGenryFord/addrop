@@ -10,33 +10,100 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CampaignsCampaignIdRouteImport } from './routes/campaigns/$campaignId'
+import { Route as ApiCampaignsRouteImport } from './routes/api/campaigns'
+import { Route as ApiCampaignsCampaignIdRouteImport } from './routes/api/campaigns.$campaignId'
+import { Route as ApiAdsAdIdRouteImport } from './routes/api/ads.$adId'
+import { Route as ApiAdsAdIdRegenerateRouteImport } from './routes/api/ads.$adId.regenerate'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CampaignsCampaignIdRoute = CampaignsCampaignIdRouteImport.update({
+  id: '/campaigns/$campaignId',
+  path: '/campaigns/$campaignId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCampaignsRoute = ApiCampaignsRouteImport.update({
+  id: '/api/campaigns',
+  path: '/api/campaigns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiCampaignsCampaignIdRoute = ApiCampaignsCampaignIdRouteImport.update({
+  id: '/$campaignId',
+  path: '/$campaignId',
+  getParentRoute: () => ApiCampaignsRoute,
+} as any)
+const ApiAdsAdIdRoute = ApiAdsAdIdRouteImport.update({
+  id: '/api/ads/$adId',
+  path: '/api/ads/$adId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdsAdIdRegenerateRoute = ApiAdsAdIdRegenerateRouteImport.update({
+  id: '/regenerate',
+  path: '/regenerate',
+  getParentRoute: () => ApiAdsAdIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/api/campaigns': typeof ApiCampaignsRouteWithChildren
+  '/campaigns/$campaignId': typeof CampaignsCampaignIdRoute
+  '/api/ads/$adId': typeof ApiAdsAdIdRouteWithChildren
+  '/api/campaigns/$campaignId': typeof ApiCampaignsCampaignIdRoute
+  '/api/ads/$adId/regenerate': typeof ApiAdsAdIdRegenerateRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/api/campaigns': typeof ApiCampaignsRouteWithChildren
+  '/campaigns/$campaignId': typeof CampaignsCampaignIdRoute
+  '/api/ads/$adId': typeof ApiAdsAdIdRouteWithChildren
+  '/api/campaigns/$campaignId': typeof ApiCampaignsCampaignIdRoute
+  '/api/ads/$adId/regenerate': typeof ApiAdsAdIdRegenerateRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/api/campaigns': typeof ApiCampaignsRouteWithChildren
+  '/campaigns/$campaignId': typeof CampaignsCampaignIdRoute
+  '/api/ads/$adId': typeof ApiAdsAdIdRouteWithChildren
+  '/api/campaigns/$campaignId': typeof ApiCampaignsCampaignIdRoute
+  '/api/ads/$adId/regenerate': typeof ApiAdsAdIdRegenerateRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/api/campaigns'
+    | '/campaigns/$campaignId'
+    | '/api/ads/$adId'
+    | '/api/campaigns/$campaignId'
+    | '/api/ads/$adId/regenerate'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/api/campaigns'
+    | '/campaigns/$campaignId'
+    | '/api/ads/$adId'
+    | '/api/campaigns/$campaignId'
+    | '/api/ads/$adId/regenerate'
+  id:
+    | '__root__'
+    | '/'
+    | '/api/campaigns'
+    | '/campaigns/$campaignId'
+    | '/api/ads/$adId'
+    | '/api/campaigns/$campaignId'
+    | '/api/ads/$adId/regenerate'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApiCampaignsRoute: typeof ApiCampaignsRouteWithChildren
+  CampaignsCampaignIdRoute: typeof CampaignsCampaignIdRoute
+  ApiAdsAdIdRoute: typeof ApiAdsAdIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +115,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/campaigns/$campaignId': {
+      id: '/campaigns/$campaignId'
+      path: '/campaigns/$campaignId'
+      fullPath: '/campaigns/$campaignId'
+      preLoaderRoute: typeof CampaignsCampaignIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/campaigns': {
+      id: '/api/campaigns'
+      path: '/api/campaigns'
+      fullPath: '/api/campaigns'
+      preLoaderRoute: typeof ApiCampaignsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/campaigns/$campaignId': {
+      id: '/api/campaigns/$campaignId'
+      path: '/$campaignId'
+      fullPath: '/api/campaigns/$campaignId'
+      preLoaderRoute: typeof ApiCampaignsCampaignIdRouteImport
+      parentRoute: typeof ApiCampaignsRoute
+    }
+    '/api/ads/$adId': {
+      id: '/api/ads/$adId'
+      path: '/api/ads/$adId'
+      fullPath: '/api/ads/$adId'
+      preLoaderRoute: typeof ApiAdsAdIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/ads/$adId/regenerate': {
+      id: '/api/ads/$adId/regenerate'
+      path: '/regenerate'
+      fullPath: '/api/ads/$adId/regenerate'
+      preLoaderRoute: typeof ApiAdsAdIdRegenerateRouteImport
+      parentRoute: typeof ApiAdsAdIdRoute
+    }
   }
 }
 
+interface ApiCampaignsRouteChildren {
+  ApiCampaignsCampaignIdRoute: typeof ApiCampaignsCampaignIdRoute
+}
+
+const ApiCampaignsRouteChildren: ApiCampaignsRouteChildren = {
+  ApiCampaignsCampaignIdRoute: ApiCampaignsCampaignIdRoute,
+}
+
+const ApiCampaignsRouteWithChildren = ApiCampaignsRoute._addFileChildren(
+  ApiCampaignsRouteChildren,
+)
+
+interface ApiAdsAdIdRouteChildren {
+  ApiAdsAdIdRegenerateRoute: typeof ApiAdsAdIdRegenerateRoute
+}
+
+const ApiAdsAdIdRouteChildren: ApiAdsAdIdRouteChildren = {
+  ApiAdsAdIdRegenerateRoute: ApiAdsAdIdRegenerateRoute,
+}
+
+const ApiAdsAdIdRouteWithChildren = ApiAdsAdIdRoute._addFileChildren(
+  ApiAdsAdIdRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApiCampaignsRoute: ApiCampaignsRouteWithChildren,
+  CampaignsCampaignIdRoute: CampaignsCampaignIdRoute,
+  ApiAdsAdIdRoute: ApiAdsAdIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
