@@ -2,12 +2,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { getDb } from '#/db'
 import { ads } from '#/db/schema'
 import { eq } from 'drizzle-orm'
-import type { UpdateAdRequest, UpdateAdResponse } from '#/types'
+import type { UpdateAdRequest } from '#/types'
 
 export const Route = createFileRoute('/api/ads/$adId')({
   server: {
     handlers: {
-      PUT: async ({ params, request }): Promise<UpdateAdResponse> => {
+      PUT: async ({ params, request }): Promise<Response> => {
         try {
           const adId = Number(params.adId)
           const { field, value } = (await request.json()) as UpdateAdRequest
@@ -40,7 +40,7 @@ export const Route = createFileRoute('/api/ads/$adId')({
             })
             .where(eq(ads.id, adId))
 
-          return { ok: true }
+          return Response.json({ ok: true })
         } catch (error) {
           console.error('PUT /api/ads/:id failed:', error)
           throw new Response(

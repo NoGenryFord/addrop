@@ -1,14 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getDb } from '#/db'
-import { ads, campaigns, brandProfiles } from '#/db/schema'
+import { ads, brandProfiles } from '#/db/schema'
 import { eq } from 'drizzle-orm'
 import { generateOneAd } from '#/lib/adGenerator'
-import type { RegenerateAdResponse } from '#/types'
+
 
 export const Route = createFileRoute('/api/ads/$adId/regenerate')({
   server: {
     handlers: {
-      POST: async ({ params }): Promise<RegenerateAdResponse> => {
+      POST: async ({ params }): Promise<Response> => {
         try {
           const adId = Number(params.adId)
 
@@ -76,7 +76,7 @@ export const Route = createFileRoute('/api/ads/$adId/regenerate')({
 
           console.log(`[Regenerate] Ad ${adId} regenerated successfully`)
 
-          return { ok: true }
+          return Response.json({ ok: true })
         } catch (error) {
           console.error('POST /api/ads/:id/regenerate failed:', error)
           throw new Response(

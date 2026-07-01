@@ -1,15 +1,16 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { getDb } from '#/db'
 import { campaigns, brandProfiles, ads } from '#/db/schema'
+import { eq } from 'drizzle-orm'
 import { fetchPageContent } from '#/lib/scraper'
 import { extractBrandProfile } from '#/lib/extractor'
 import { generateAds } from '#/lib/adGenerator'
-import type { CreateCampaignRequest, CreateCampaignResponse } from '#/types'
+import type { CreateCampaignRequest } from '#/types'
 
 export const Route = createFileRoute('/api/campaigns')({
   server: {
     handlers: {
-      POST: async ({ request }): Promise<CreateCampaignResponse> => {
+      POST: async ({ request }): Promise<Response> => {
         try {
           const { url } = (await request.json()) as CreateCampaignRequest
 
@@ -51,7 +52,7 @@ export const Route = createFileRoute('/api/campaigns')({
             )
 
             // Save brand profile
-            const [savedProfile] = await db
+            await db
               .insert(brandProfiles)
               .values({
                 campaignId: campaign.id,
@@ -93,7 +94,7 @@ export const Route = createFileRoute('/api/campaigns')({
                 status: 'ready',
                 updatedAt: new Date(),
               })
-              .where((t) => t.eq(campaigns.id, campaign.id))
+              .where(eq(campaigns.id, campaign.id))
 
             console.log(`[API] Campaign ${campaign.id} completed successfully`)
           } catch (error) {
@@ -109,12 +110,12 @@ export const Route = createFileRoute('/api/campaigns')({
                 errorMessage,
                 updatedAt: new Date(),
               })
-              .where((t) => t.eq(campaigns.id, campaign.id))
+              .where(eq(campaigns.id, campaign.id))
 
             throw error
           }
 
-          return { id: campaign.id }
+          return Response.json({ id: campaign.id })
         } catch (error) {
           const message =
             error instanceof Error ? error.message : 'Failed to create campaign'

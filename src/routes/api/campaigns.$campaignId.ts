@@ -2,12 +2,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { getDb } from '#/db'
 import { campaigns, brandProfiles, ads } from '#/db/schema'
 import { eq } from 'drizzle-orm'
-import type { GetCampaignResponse } from '#/types'
+
 
 export const Route = createFileRoute('/api/campaigns/$campaignId')({
   server: {
     handlers: {
-      GET: async ({ params }): Promise<GetCampaignResponse> => {
+      GET: async ({ params }): Promise<Response> => {
         try {
           const campaignId = Number(params.campaignId)
 
@@ -33,11 +33,11 @@ export const Route = createFileRoute('/api/campaigns/$campaignId')({
             where: eq(ads.campaignId, campaignId),
           })
 
-          return {
+          return Response.json({
             campaign: campaign as any,
             brandProfile: brandProfile as any,
             ads: campaignAds as any,
-          }
+          })
         } catch (error) {
           if (error instanceof Response) {
             throw error

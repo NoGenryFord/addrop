@@ -207,20 +207,25 @@ npm run deploy       # build + wrangler deploy (needs CLOUDFLARE_API_TOKEN)
 - Initial migration generated (`drizzle/0000_condemned_titania.sql`)
 - Root route (`__root.tsx`) with HTML shell
 - DB connection via Neon HTTP driver (`src/db/index.ts`)
+- `src/routes/index.tsx` — URL input landing page
+- `src/lib/scraper.ts` — fetch + Firecrawl fallback
+- `src/lib/extractor.ts` — AI brand profile extraction
+- `src/lib/adGenerator.ts` — AI ad generation
+- `src/routes/api/campaigns.ts` — POST handler
+- `src/routes/api/campaigns.$campaignId.ts` — GET handler (polling)
+- `src/routes/api/ads.$adId.ts` — PUT handler (edit field)
+- `src/routes/api/ads.$adId.regenerate.ts` — POST handler (regenerate)
+- `src/routes/campaigns/$campaignId.tsx` — campaign page UI
+- `src/components/AdCard.tsx` — editable ad preview
+- `src/components/BrandProfileCard.tsx` — brand profile display
+- `src/components/StatusProgress.tsx` — pipeline status banner
 
 ### In Progress / Next
-- [ ] `src/routes/index.tsx` — URL input landing page
-- [ ] `src/lib/scraper.ts` — fetch + Firecrawl fallback
-- [ ] `src/lib/extractor.ts` — AI brand profile extraction
-- [ ] `src/lib/adGenerator.ts` — AI ad generation
-- [ ] `src/routes/api/campaigns.ts` — POST handler
-- [ ] `src/routes/api/campaigns.$campaignId.ts` — GET handler (polling)
-- [ ] `src/routes/api/ads.$adId.ts` — PUT handler (edit field)
-- [ ] `src/routes/api/ads.$adId.regenerate.ts` — POST handler (regenerate)
-- [ ] `src/routes/campaigns/$campaignId.tsx` — campaign page UI
-- [ ] `src/components/AdCard.tsx` — editable ad preview
-- [ ] `src/components/BrandProfileCard.tsx` — brand profile display
-- [ ] `src/components/StatusProgress.tsx` — pipeline status banner
+- [ ] Fix TypeScript compilation errors in API routes (properly use `json()` from `@tanstack/react-start` or return `Response` objects).
+- [ ] Fix Drizzle ORM `.where(eq(...))` syntax in `campaigns.ts`.
+- [ ] Fix invalid `timeout` option in `src/lib/scraper.ts` `fetch` call (use `AbortSignal.timeout`).
+- [ ] Fix `ReactNode` import type errors in UI components due to `verbatimModuleSyntax`.
+- [ ] Fix `drizzle.config.ts` dbCredentials url type error.
 
 ### Consciously Deferred
 - Image file upload (use URL-swap from candidate images instead)

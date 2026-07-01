@@ -1,8 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import type {
-  Campaign,
-  BrandProfile,
-  Ad,
   CreateCampaignRequest,
   CreateCampaignResponse,
   GetCampaignResponse,
@@ -61,7 +58,8 @@ export function useCampaign(campaignId: number | null) {
     queryFn: () => (campaignId ? fetchCampaign(campaignId) : Promise.reject('No ID')),
     enabled: !!campaignId,
     // Poll every 2 seconds while status !== 'ready'
-    refetchInterval: (data) => {
+    refetchInterval: (query) => {
+      const data = query.state.data
       if (!data?.campaign) return false
       return data.campaign.status === 'ready' ? false : 2000
     },
